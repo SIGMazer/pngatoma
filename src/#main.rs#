@@ -1,0 +1,31 @@
+use raylib::prelude::*;
+
+struct cell {
+    color: Color,
+}
+fn main(){
+   
+}
+fn main() {
+    let (mut rl, thread) = raylib::init()
+        .size(1280, 720)
+        .title("pngatoma")
+        .build();
+
+    let mut nex = Image::load_image("nexfools.png").unwrap();
+    let nex_data = nex.get_image_data();
+
+    let bg = Color::new(18, 18, 18, 255);
+    while !rl.window_should_close() {
+        let mut d = rl.begin_drawing(&thread);
+        d.clear_background(bg);
+        for x in 0..nex.width() {
+            for y in 0..nex.height() {
+                let c = nex_data[(x + y * nex.width()) as usize];
+                if c.a > 0 {
+                    d.draw_pixel(x, y, c);
+                }
+            }
+        }
+    }
+}
