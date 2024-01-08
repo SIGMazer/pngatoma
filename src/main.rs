@@ -158,12 +158,17 @@ fn main() {
 
 
     let bg = Color::new(18, 18, 18, 255);
+    let mut isplaying = false;
     while !rl.window_should_close() {
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(bg);
-        
-        display_board(&nex_board, &mut d);
-        nex_board = next_board(&nex_board);
-        std::thread::sleep(std::time::Duration::from_millis(100));
+        if d.is_key_pressed(KeyboardKey::KEY_SPACE) {
+            isplaying = !isplaying;
+        } 
+        if isplaying {
+            display_board(&nex_board, &mut d);
+            nex_board = next_board(&nex_board);
+            std::thread::sleep(std::time::Duration::from_millis(100));
+        }
     }
 }
