@@ -7,7 +7,7 @@ type Board = [[Cell; WIDTH]; HEIGHT];
 const WIDTH: usize = 256;
 const HEIGHT: usize = 256;
 const GOL1: [[State; 9]; 2] = [
-    [Dead, Dead, Dead, Alive, Dead, Dead, Alive, Alive,Dead],
+    [Dead, Dead, Dead, Alive, Dead, Dead, Alive, Alive, Dead],
     [Dead, Dead, Alive, Alive, Dead, Dead, Dead, Dead, Alive],
 ];
 
@@ -52,10 +52,7 @@ struct Cell {
 
 impl Cell {
     fn new(color: Color, state: State) -> Self {
-        Self {
-            color,
-            state,
-        }
+        Self { color, state }
     }
     fn default() -> Self {
         Self {
@@ -71,7 +68,6 @@ enum State {
     Dead,
 }
 
-
 impl State {
     fn as_usize(&self) -> usize {
         match self {
@@ -80,7 +76,6 @@ impl State {
         }
     }
 }
-
 
 fn count_neighbors(x: i32, y: i32, cells: &Board) -> i32 {
     let mut count = 0;
@@ -136,26 +131,19 @@ fn display_board(board: &Board, d: &mut RaylibDrawHandle) {
             } else {
                 Color::new(18, 18, 18, 255)
             };
-            d.draw_rectangle(
-                x as i32* 2,
-                y as i32* 2,
-                3,
-                3,
-                color,
-            );
+            d.draw_rectangle(x as i32 * 2, y as i32 * 2, 3, 3, color);
         }
     }
 }
 
 fn main() {
     let (mut rl, thread) = raylib::init()
-        .size(256*2, 256*2)
+        .size(256 * 2, 256 * 2)
         .title("pngatoma")
         .build();
 
     let nex = Image::load_image("nexfools.png").unwrap();
     let mut nex_board = image_to_board(nex);
-
 
     let bg = Color::new(18, 18, 18, 255);
     let mut isplaying = false;
@@ -164,7 +152,7 @@ fn main() {
         d.clear_background(bg);
         if d.is_key_pressed(KeyboardKey::KEY_SPACE) {
             isplaying = !isplaying;
-        } 
+        }
         if isplaying {
             display_board(&nex_board, &mut d);
             nex_board = next_board(&nex_board);
